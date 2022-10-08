@@ -1,0 +1,22 @@
+{
+  "name": "cineflix-backend",
+  "version": "1.0.0",
+  "description": "cineflix backend ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sarveshrajpure/cineflix-backend.git"
+  },
+  "author": "sarvesh rajpure",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sarveshrajpure/cineflix-backend/issues"
+  },
+  "homepage": "https://github.com/Sarveshrajpure/cineflix-backend#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
