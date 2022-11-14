@@ -21,22 +21,10 @@ const userSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
-    firstName: {
-      type: String,
-      required: true,
-      maxLength: 100,
-      trim: true,
+    isAdmin: {
+      type: Boolean,
+      deafult: false,
     },
-    lastName: { type: String, required: true, maxLength: 100, trim: true },
-
-    phone: {
-      type: String,
-      required: true,
-      maxLength: 12,
-      trim: true,
-      unique: true,
-    },
-    vrified: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

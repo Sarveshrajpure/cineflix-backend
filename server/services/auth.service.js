@@ -3,7 +3,7 @@ const httpStatus = require("http-status");
 const { ApiError } = require("../middlewares/apiError");
 const userService = require("./user.service");
 
-const createUser = async (email, password, firstName, lastName, phone) => {
+const createUser = async (email, password, name) => {
   try {
     if (await User.emailTaken(email)) {
       throw new ApiError(httpStatus.BAD_REQUEST, "Email already registered");
@@ -12,9 +12,6 @@ const createUser = async (email, password, firstName, lastName, phone) => {
     const user = new User({
       email,
       password,
-      firstName,
-      lastName,
-      phone,
     });
 
     await user.save();
