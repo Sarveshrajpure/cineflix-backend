@@ -23,7 +23,7 @@ const userSchema = mongoose.Schema(
     },
     isAdmin: {
       type: Boolean,
-      deafult: false,
+      default: false,
     },
   },
   { timestamps: true }
@@ -45,9 +45,9 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.generateAuthToken = function () {
   let user = this;
 
-  const userObj = { id: user._id.toHexString() };
+  const userObj = { id: user._id.toHexString(), isAdmin: user.isAdmin };
 
-  const token = jwt.sign(userObj, process.env.APP_SECRET, { expiresIn: "1d" });
+  const token = jwt.sign(userObj, process.env.APP_SECRET, { expiresIn: "5d" });
   return token;
 };
 

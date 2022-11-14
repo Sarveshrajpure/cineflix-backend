@@ -41,27 +41,34 @@ const addProfile = async (name, userId) => {
 const editProfile = async (values) => {
   try {
     // checking what needs to be updated
-    console.log(values);
-    if (values.name && values.profilePic) {
-      console.log("in else if0");
 
-      let editProfile = await Profile.updateOne(
-        { _id: values.profileId },
-        { $set: { profilePic: values.profilePic, name: values.name } }
+    if (values.name && values.profilePic) {
+      let editProfile = await Profile.findByIdAndUpdate(
+        values.profileId,
+        {
+          $set: { profilePic: values.profilePic, name: values.name },
+        },
+        { new: "true" }
       );
 
       return editProfile;
     } else if (values.profilePic) {
-      let editProfile = await Profile.updateOne({
-        _id: values.profileId,
-        $set: { profilePic: values.profilePic },
-      });
+      let editProfile = await Profile.findByIdAndUpdate(
+        values.profileId,
+        {
+          $set: { profilePic: values.profilePic },
+        },
+        { new: "true" }
+      );
       return editProfile;
     } else if (values.name) {
-      let editProfile = await Profile.updateOne({
-        _id: values.profileId,
-        $set: { name: values.name },
-      });
+      let editProfile = await Profile.findByIdAndUpdate(
+        values.profileId,
+        {
+          $set: { name: values.name },
+        },
+        { new: "true" }
+      );
       return editProfile;
     } else {
       return "Nothing to update!";

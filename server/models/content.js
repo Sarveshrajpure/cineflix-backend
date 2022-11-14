@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const movieSchema = new mongoose.Schema(
+const contentSchema = new mongoose.Schema(
   {
     title: { type: String, required: true, unique: true },
     desc: { type: String },
@@ -17,6 +17,12 @@ const movieSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Movie = mongoose.model("Movie", movieSchema);
+contentSchema.statics.titleTaken = async function (title) {
+  const content = await this.findOne({ title });
 
-module.exports = { Movie };
+  return !!content;
+};
+
+const Content = mongoose.model("Content", contentSchema);
+
+module.exports = { Content };

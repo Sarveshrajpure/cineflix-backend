@@ -45,10 +45,8 @@ const profileController = {
       if (values) {
         let editProfile = await profileService.editProfile(values);
 
-        console.log(editProfile);
-
-        if (editProfile.modifiedCount > 0) {
-          res.status(httpStatus.OK).send("Profile  updated successfully!");
+        if (editProfile) {
+          res.status(httpStatus.OK).send(editProfile);
         } else {
           res.status(httpStatus.OK).send(editProfile);
         }
