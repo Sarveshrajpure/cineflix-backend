@@ -21,22 +21,10 @@ const userSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
-    firstName: {
-      type: String,
-      required: true,
-      maxLength: 100,
-      trim: true,
+    isAdmin: {
+      type: Boolean,
+      default: false,
     },
-    lastName: { type: String, required: true, maxLength: 100, trim: true },
-
-    phone: {
-      type: String,
-      required: true,
-      maxLength: 12,
-      trim: true,
-      unique: true,
-    },
-    vrified: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
@@ -57,9 +45,9 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.generateAuthToken = function () {
   let user = this;
 
-  const userObj = { id: user._id.toHexString() };
+  const userObj = { id: user._id.toHexString(), isAdmin: user.isAdmin };
 
-  const token = jwt.sign(userObj, process.env.APP_SECRET, { expiresIn: "1d" });
+  const token = jwt.sign(userObj, process.env.APP_SECRET, { expiresIn: "5d" });
   return token;
 };
 

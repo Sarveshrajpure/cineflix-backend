@@ -1,6 +1,6 @@
 const { ApiError } = require("../middlewares/apiError");
 const { User } = require("../models/user");
-const { authService, userService } = require("../services/");
+const { authService, userService, profileService } = require("../services/");
 const {
   registerSchema,
   loginSchema,
@@ -21,16 +21,17 @@ const authController = {
           throw new ApiError(httpStatus.BAD_REQUEST, "User already exists!");
         }
 
-        let user = await authService.createUser(
-          value.email,
-          value.password,
-          value.firstName,
-          value.lastName,
-          value.phone
-        );
+        let user = await authService.createUser(value.email, value.password);
+
+        // Creating a default profile for user
+
+        let defaultProfile = { name: "me", userId: user._id };
+
+        let profile = await profileService.createProfile(defaultProfile);
 
         res.status(httpStatus.CREATED).send({
           user,
+          profile,
         });
       }
     } catch (error) {
@@ -52,14 +53,13 @@ const authController = {
         //setting access token
         let token = await authService.genAuthToken(user);
 
+        let { password, ...user_info } = user._doc;
         res
           .cookie("x-access-token", token, {
             expires: authService.setExpiry(7),
           })
           .status(httpStatus.OK)
-          .send({
-            user,
-          });
+          .send(user_info);
       }
     } catch (error) {
       next(error);
@@ -67,6 +67,7 @@ const authController = {
   },
   async isauth(req, res, next) {
     let auth = req.authenticated;
+    console.log(auth);
 
     let _id = auth.id;
     let user = await userService.findUserById(_id);

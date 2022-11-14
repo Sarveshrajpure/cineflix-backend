@@ -22,4 +22,26 @@ const auth = () => async (req, res, next) => {
   }
 };
 
-module.exports = auth;
+const adminAuth = () => async (req, res, next) => {
+  try {
+    let accessToken = req.headers["authorization"];
+    if (!accessToken) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, "Unauthorized user!");
+    }
+
+    let validToken = await userService.validateToken(accessToken);
+
+    if (validToken && accessToken) {
+      if (validToken.isAdmin == true) {
+        req.authenticated = validToken;
+        next();
+      } else {
+        throw new ApiError(httpStatus.UNAUTHORIZED, "Admin access needed!");
+      }
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { auth, adminAuth };
