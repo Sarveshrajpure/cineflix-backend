@@ -3,6 +3,7 @@ const authRoute = require("./auth.route");
 const userRoute = require("./user.route");
 const profileRoute = require("./profile.route");
 const contentRoute = require("./content.route");
+const listsRoute = require("./lists.route");
 
 const router = express.Router();
 
@@ -22,6 +23,10 @@ const routesIndex = [
   {
     path: "/content",
     route: contentRoute,
+  },
+  {
+    path: "/lists",
+    route: listsRoute,
   },
 ];
 
