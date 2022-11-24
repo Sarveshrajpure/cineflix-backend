@@ -24,7 +24,6 @@ const addContent = async (
     );
   }
   try {
-    console.log(isSeries);
     const newContent = new Content({
       title,
       desc,
