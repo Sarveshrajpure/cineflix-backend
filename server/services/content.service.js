@@ -9,13 +9,14 @@ const addContent = async (
   desc,
   img,
   imgTitle,
-  imgsm,
+  imgSm,
   trailer,
   video,
   year,
   limit,
+  duration,
   genre,
-  isSeries
+  type
 ) => {
   if (await Content.titleTaken(title)) {
     throw new ApiError(
@@ -29,13 +30,14 @@ const addContent = async (
       desc,
       img,
       imgTitle,
-      imgsm,
+      imgSm,
       trailer,
       video,
       year,
       limit,
+      duration,
       genre,
-      isSeries,
+      type,
     });
 
     await newContent.save();
@@ -52,13 +54,13 @@ const UpdateContent = async (
   desc,
   img,
   imgTitle,
-  imgsm,
+  imgSm,
   trailer,
   video,
   year,
   limit,
   genre,
-  isSeries
+  type
 ) => {
   try {
     let updatedContent = await Content.findByIdAndUpdate(
@@ -69,13 +71,13 @@ const UpdateContent = async (
           desc,
           img,
           imgTitle,
-          imgsm,
+          imgSm,
           trailer,
           video,
           year,
           limit,
           genre,
-          isSeries,
+          type,
         },
       },
       { new: "true" }
@@ -87,13 +89,14 @@ const UpdateContent = async (
   }
 };
 
-const deleteContent = async (id, isSeries) => {
+const deleteContent = async (id, type) => {
   try {
-    if (isSeries == true) {
+    if (type === "series") {
       console.log("in series");
-    } else {
+    }
+    if (type === "movie") {
       let deletedContent = await Content.findByIdAndDelete(id);
-      console.log(deletedContent);
+
       return deletedContent;
     }
   } catch (error) {
@@ -118,6 +121,9 @@ const randomContent = async (contentType) => {
 
       return content;
     }
+
+    let content = await Content.aggregate([{ $sample: { size: 1 } }]);
+    return content;
   } catch (error) {
     throw error;
   }
@@ -133,10 +139,21 @@ const getAllContent = async () => {
   }
 };
 
+const getContentById = async (id) => {
+  try {
+    let content = await Content.findById({ _id: id });
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   addContent,
   UpdateContent,
   deleteContent,
   randomContent,
   getAllContent,
+  getContentById,
 };

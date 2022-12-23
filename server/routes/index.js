@@ -4,6 +4,8 @@ const userRoute = require("./user.route");
 const profileRoute = require("./profile.route");
 const contentRoute = require("./content.route");
 const listsRoute = require("./lists.route");
+const seasonRoute = require("./season.route");
+const episodeRoute = require("./episode.route");
 
 const router = express.Router();
 
@@ -27,6 +29,14 @@ const routesIndex = [
   {
     path: "/lists",
     route: listsRoute,
+  },
+  {
+    path: "/season",
+    route: seasonRoute,
+  },
+  {
+    path: "/episode",
+    route: episodeRoute,
   },
 ];
 

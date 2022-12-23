@@ -54,12 +54,21 @@ const authController = {
         let token = await authService.genAuthToken(user);
 
         let { password, ...user_info } = user._doc;
-        res
-          .cookie("x-access-token", token, {
-            expires: authService.setExpiry(7),
-          })
-          .status(httpStatus.OK)
-          .send(user_info);
+        if (user.isAdmin === true) {
+          res
+            .cookie("x-access-token-admin", token, {
+              expires: authService.setExpiry(7),
+            })
+            .status(httpStatus.OK)
+            .send(user_info);
+        } else {
+          res
+            .cookie("x-access-token", token, {
+              expires: authService.setExpiry(7),
+            })
+            .status(httpStatus.OK)
+            .send(user_info);
+        }
       }
     } catch (error) {
       next(error);
@@ -67,13 +76,22 @@ const authController = {
   },
   async isauth(req, res, next) {
     let auth = req.authenticated;
-    console.log(auth);
 
     let _id = auth.id;
     let user = await userService.findUserById(_id);
 
     if (auth && user) {
       res.status(httpStatus.OK).send(user);
+    }
+  },
+
+  async getUserStats(req, res, next) {
+    try {
+      let data = await authService.getUserStats();
+
+      res.status(httpStatus.OK).send(data);
+    } catch (error) {
+      next(error);
     }
   },
 };

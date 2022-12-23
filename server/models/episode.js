@@ -14,6 +14,12 @@ const episodeSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+episodeSchema.statics.titleTaken = async function (title) {
+  const episode = await Episode.findOne({ title });
+
+  return !!episode;
+};
+
 const Episode = mongoose.model("Episode", episodeSchema);
 
 module.exports = { Episode };

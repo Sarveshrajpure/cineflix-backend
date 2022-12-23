@@ -10,10 +10,13 @@ router.post("/addcontent", adminAuth(), contentController.addNewContent);
 router.put("/updatecontent", adminAuth(), contentController.updateContent);
 
 //api/content/deletecontent
-router.delete("/deletecontent", adminAuth(), contentController.deleteContent);
+router.post("/deletecontent", adminAuth(), contentController.deleteContent);
 
 //api/content/getall
-router.get("/getall", adminAuth(), contentController.getAllContent);
+router.post("/getall", auth(), contentController.getAllContent);
+
+//api/content/get
+router.get("/get/:id", auth(), contentController.getContent);
 
 //api/content/randomcontent
 router.get("/randomcontent", auth(), contentController.getRandomContent);

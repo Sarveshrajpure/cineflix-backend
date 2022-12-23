@@ -5,7 +5,12 @@ const {
   addListSchema,
   deleteListSchema,
   getListSchema,
+  editListSchema,
+  addListItemSchema,
+  removeListItemSchema,
+  getListByIdSchema,
 } = require("../validations/listsValidations");
+const { addListItem } = require("../services/lists.service");
 require("dotenv").config();
 
 const listController = {
@@ -30,6 +35,48 @@ const listController = {
 
   async updateList(req, res, next) {
     try {
+      let values = await editListSchema.validateAsync(req.body);
+
+      let updatedList = await listsService.addListItem(
+        values.id,
+        values.title,
+        values.genre,
+        values.content
+      );
+
+      res.status(httpStatus.OK).send(updatedList);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async addListItem(req, res, next) {
+    try {
+      let values = await addListItemSchema.validateAsync(req.body);
+
+      let updatedList = await listsService.addListItem(
+        values.id,
+        values.content
+      );
+      if (updatedList.modifiedCount > 0) {
+        res.status(httpStatus.OK).send({ message: "List Item added!" });
+      }
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async removeListItem(req, res, next) {
+    try {
+      let values = await removeListItemSchema.validateAsync(req.body);
+
+      let updatedList = await listsService.removeListItem(
+        values.id,
+        values.contentId
+      );
+      if (updatedList.modifiedCount > 0) {
+        res.status(httpStatus.OK).send({ message: "List Item removed!" });
+      }
     } catch (error) {
       next(error);
     }
@@ -38,7 +85,6 @@ const listController = {
   async deleteList(req, res, next) {
     try {
       let values = await deleteListSchema.validateAsync(req.body);
-      console.log(values);
 
       if (values) {
         let deleteList = await listsService.deleteList(values.id);
@@ -58,7 +104,10 @@ const listController = {
 
   async getAllList(req, res, next) {
     try {
-      let values = await getListSchema.validateAsync(req.body);
+      let values = await getListSchema.validateAsync({
+        contentType: req.query.contentType,
+        genreType: req.query.genreType,
+      });
       let list = [];
       if (values) {
         if (
@@ -83,6 +132,20 @@ const listController = {
           res.status(httpStatus.OK).send(list);
         }
       }
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async getListById(req, res, next) {
+    try {
+      let values = await getListByIdSchema.validateAsync({
+        id: req.params.id
+      });
+
+      let list = await listsService.fetchListById(values.id);
+
+      res.status(httpStatus.OK).send(list);
     } catch (error) {
       next(error);
     }

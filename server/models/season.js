@@ -13,6 +13,12 @@ const seasonSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+seasonSchema.statics.titleTaken = async function (title) {
+  const season = await this.findOne({ title });
+
+  return !!season;
+};
+
 const Season = mongoose.model("Season", seasonSchema);
 
 module.exports = { Season };

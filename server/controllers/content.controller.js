@@ -5,6 +5,7 @@ const {
   updateContentSchema,
   deleteContentSchema,
   ramdomContentSchema,
+  getContentSchema,
 } = require("../validations/contentValidation");
 const httpStatus = require("http-status");
 require("dotenv").config();
@@ -20,13 +21,14 @@ const contentController = {
           values.desc,
           values.img,
           values.imgTitle,
-          values.imgsm,
+          values.imgSm,
           values.trailer,
           values.video,
           values.year,
           values.limit,
+          values.duration,
           values.genre,
-          values.isSeries
+          values.type
         );
 
         res.status(httpStatus.CREATED).send(addedContent);
@@ -47,14 +49,16 @@ const contentController = {
           values.desc,
           values.img,
           values.imgTitle,
-          values.imgsm,
+          values.imgSm,
           values.trailer,
           values.video,
           values.year,
           values.limit,
+          values.duration,
           values.genre,
-          values.isSeries
+          values.type
         );
+
         res.status(httpStatus.OK).send(updatedContent);
       }
     } catch (error) {
@@ -69,7 +73,7 @@ const contentController = {
       if (values) {
         let deletedContent = await contentService.deleteContent(
           values.content_id,
-          values.isSeries
+          values.type
         );
 
         if (deletedContent == null) {
@@ -91,17 +95,32 @@ const contentController = {
     try {
       let content = await contentService.getAllContent();
 
-      res.status(httpStatus.OK).send(content.reverse());
+      res.status(httpStatus.OK).send(content);
     } catch (error) {
       next(error);
     }
   },
   async getRandomContent(req, res, next) {
     try {
-      let values = await ramdomContentSchema.validateAsync(req.body);
+      let values = await ramdomContentSchema.validateAsync({
+        contentType: req.query.contentType,
+      });
 
       if (values) {
         let content = await contentService.randomContent(values.contentType);
+
+        res.status(httpStatus.OK).send(content);
+      }
+    } catch (error) {
+      next(error);
+    }
+  },
+  async getContent(req, res, next) {
+    try {
+      let values = await getContentSchema.validateAsync({ id: req.params.id });
+
+      if (values) {
+        let content = await contentService.getContentById(values.id);
 
         res.status(httpStatus.OK).send(content);
       }

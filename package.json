@@ -35,6 +35,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.8",
     "nodemon": "^2.0.16",
+    "run": "^1.4.0",
+    "server": "^1.0.38",
     "validator": "^13.7.0",
     "xss-clean": "^0.1.1"
   }

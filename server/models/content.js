@@ -10,9 +10,10 @@ const contentSchema = new mongoose.Schema(
     trailer: { type: String },
     video: { type: String },
     year: { type: String },
-    limit: { type: Number },
-    genere: { type: String },
-    isSeries: { type: Boolean, default: false },
+    limit: { type: String },
+    duration: { type: String },
+    genre: { type: String },
+    type: { type: String, default: "movie" },
   },
   { timestamps: true }
 );

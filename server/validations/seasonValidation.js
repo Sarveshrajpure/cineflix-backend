@@ -6,4 +6,11 @@ const addSeasonSchema = Joi.object({
   title: Joi.string().max(100).required(),
 });
 
-module.exports = { addSeasonSchema };
+const getAllSeasonsSchema = Joi.object({
+  contentId: Joi.objectId().required(),
+});
+
+const deleteSeasonsSchema = Joi.object({
+  seasonId: Joi.objectId().required(),
+});
+module.exports = { addSeasonSchema, getAllSeasonsSchema, deleteSeasonsSchema };

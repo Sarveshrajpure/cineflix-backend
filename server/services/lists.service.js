@@ -55,4 +55,105 @@ const getLists = async (contentType, genreType) => {
   }
 };
 
-module.exports = { createList, deleteList, getLists };
+const fetchListById = async (id) => {
+  try {
+    let list = await List.findById(id);
+    return list;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const editList = async (id, title, genre, content) => {
+  try {
+    let getListContent = await List.findById(id);
+    let previouslyAvailableContent = getListContent.content;
+    let length = previouslyAvailableContent.length;
+    let arrayToBeUpdated = previouslyAvailableContent;
+
+    let contentAlreadyExists = false;
+
+    for (let i = 0; i < length; i++) {
+      for (let j = 0; j < content.length; j++) {
+        if (previouslyAvailableContent[i] === content[j]) {
+          contentAlreadyExists = true;
+        } else {
+          contentAlreadyExists = false;
+        }
+      }
+    }
+
+    if (!contentAlreadyExists) {
+      let editedList = await List.updateOne(
+        { _id: id },
+
+        { $set: { title, genre, content: arrayToBeUpdated } }
+      );
+      return editedList;
+    } else {
+      let editedList = await List.updateOne(
+        { _id: id },
+        { $set: { title, genre } }
+      );
+      return editedList;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+const addListItem = async (id, content) => {
+  try {
+    let getListContent = await List.findById(id);
+    let previouslyAvailableContent = getListContent.content;
+    let length = previouslyAvailableContent.length;
+
+    let existingitems = [];
+
+    for (let i = 0; i < length; i++) {
+      for (let j = 0; j < content.length; j++) {
+        if (previouslyAvailableContent[i] === content[j]) {
+          existingitems.push(content[j]);
+        }
+      }
+    }
+
+    if (existingitems.length === 0) {
+      let editedList = await List.updateOne(
+        { _id: id },
+        { $push: { content: { $each: content } } }
+      );
+      return editedList;
+    } else {
+      throw new ApiError(
+        httpStatus.BAD_REQUEST,
+        `Following content already exists: ${existingitems}`
+      );
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+const removeListItem = async (id, contentId) => {
+  try {
+    let removeItem = await List.updateOne(
+      { _id: id },
+      { $pull: { content: contentId } }
+    );
+
+    return removeItem;
+  } catch (error) {
+    throw error;
+  }
+};
+
+module.exports = {
+  createList,
+  deleteList,
+  getLists,
+  editList,
+  addListItem,
+  removeListItem,
+  fetchListById,
+};

@@ -10,9 +10,10 @@ const addContentSchema = Joi.object({
   trailer: Joi.string(),
   video: Joi.string().allow(""),
   year: Joi.string(),
-  limit: Joi.number(),
+  limit: Joi.string().max(10),
+  duration: Joi.string().max(10).allow(""),
   genre: Joi.string(),
-  isSeries: Joi.boolean(),
+  type: Joi.string().max(10),
 });
 
 const updateContentSchema = Joi.object({
@@ -25,18 +26,23 @@ const updateContentSchema = Joi.object({
   trailer: Joi.string(),
   video: Joi.string().allow(""),
   year: Joi.string(),
-  limit: Joi.number(),
+  limit: Joi.string().max(10),
+  duration: Joi.string().max(10).allow(""),
   genre: Joi.string(),
-  isSeries: Joi.boolean(),
+  type: Joi.string().max(10),
 });
 
 const deleteContentSchema = Joi.object({
   content_id: Joi.objectId().required(),
-  isSeries: Joi.boolean().required(),
+  type: Joi.string().max(10),
 });
 
 const ramdomContentSchema = Joi.object({
-  contentType: Joi.string().max(20).required(),
+  contentType: Joi.string().max(20),
+});
+
+const getContentSchema = Joi.object({
+  id: Joi.objectId().required(),
 });
 
 module.exports = {
@@ -44,4 +50,5 @@ module.exports = {
   updateContentSchema,
   deleteContentSchema,
   ramdomContentSchema,
+  getContentSchema,
 };

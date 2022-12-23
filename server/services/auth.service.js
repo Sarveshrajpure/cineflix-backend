@@ -46,6 +46,28 @@ const genAuthToken = (user) => {
     throw error;
   }
 };
+
+const getUserStats = async () => {
+  try {
+    let statsData = await User.aggregate([
+      {
+        $project: {
+          month: { $month: "$createdAt" },
+        },
+      },
+      {
+        $group: {
+          _id: "$month",
+          total: { $sum: 1 },
+        },
+      },
+    ]);
+
+    return statsData;
+  } catch (error) {
+    throw error;
+  }
+};
 const setExpiry = (days) => {
   let date = new Date(Date.now() + days * 24 * 3600000);
 
@@ -56,5 +78,6 @@ module.exports = {
   createUser,
   signInEmailAndPassword,
   genAuthToken,
+  getUserStats,
   setExpiry,
 };
