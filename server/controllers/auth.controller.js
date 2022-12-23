@@ -54,6 +54,33 @@ const authController = {
         let token = await authService.genAuthToken(user);
 
         let { password, ...user_info } = user._doc;
+
+        res
+          .cookie("x-access-token", token, {
+            expires: authService.setExpiry(7),
+          })
+          .status(httpStatus.OK)
+          .send(user_info);
+      }
+    } catch (error) {
+      next(error);
+    }
+  },
+  async adminSignin(req, res, next) {
+    try {
+      //validating user login data using joi
+      let value = await loginSchema.validateAsync(req.body);
+
+      if (value) {
+        const user = await authService.signInEmailAndPassword(
+          value.email,
+          value.password
+        );
+
+        //setting access token
+        let token = await authService.genAuthToken(user);
+
+        let { password, ...user_info } = user._doc;
         if (user.isAdmin === true) {
           res
             .cookie("x-access-token-admin", token, {
@@ -62,12 +89,7 @@ const authController = {
             .status(httpStatus.OK)
             .send(user_info);
         } else {
-          res
-            .cookie("x-access-token", token, {
-              expires: authService.setExpiry(7),
-            })
-            .status(httpStatus.OK)
-            .send(user_info);
+          throw new ApiError(httpStatus.UNAUTHORIZED, "Access denied!");
         }
       }
     } catch (error) {
