@@ -46,8 +46,8 @@ const profileController = {
       if (values) {
         let editProfile = await profileService.editProfile(
           values.name,
-          values.userId,
-          values.profileId
+          values.profileId,
+          values.profilePic
         );
 
         if (editProfile) {

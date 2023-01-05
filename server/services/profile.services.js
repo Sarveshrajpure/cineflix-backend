@@ -38,34 +38,34 @@ const addProfile = async (name, userId) => {
   }
 };
 
-const editProfile = async (values) => {
+const editProfile = async (name, profileId, profilePic) => {
   try {
     // checking what needs to be updated
 
-    if (values.name && values.profilePic) {
+    if (name && profilePic) {
       let editProfile = await Profile.findByIdAndUpdate(
-        values.profileId,
+        profileId,
         {
-          $set: { profilePic: values.profilePic, name: values.name },
+          $set: { profilePic: profilePic, name: name },
         },
         { new: "true" }
       );
 
       return editProfile;
-    } else if (values.profilePic) {
+    } else if (profilePic) {
       let editProfile = await Profile.findByIdAndUpdate(
-        values.profileId,
+        profileId,
         {
-          $set: { profilePic: values.profilePic },
+          $set: { profilePic: profilePic },
         },
         { new: "true" }
       );
       return editProfile;
-    } else if (values.name) {
+    } else if (name) {
       let editProfile = await Profile.findByIdAndUpdate(
-        values.profileId,
+        profileId,
         {
-          $set: { name: values.name },
+          $set: { name: name },
         },
         { new: "true" }
       );

@@ -8,13 +8,13 @@ const addProfileSchema = Joi.object({
 });
 
 const editProfileSchema = Joi.object({
-  name: Joi.string().max(100),
+  name: Joi.string().max(50),
   profileId: Joi.objectId().required(),
   profilePic: Joi.string().allow(""),
 });
 
 const deleteProfileSchema = Joi.object({
-  name: Joi.string().max(100),
+  name: Joi.string().max(50),
   profileId: Joi.objectId().required(),
   userId: Joi.objectId().required(),
   profilePic: Joi.string().allow(""),
