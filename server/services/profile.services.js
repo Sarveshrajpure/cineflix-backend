@@ -77,4 +77,23 @@ const editProfile = async (values) => {
     throw error;
   }
 };
-module.exports = { createProfile, addProfile, editProfile, getProfiles };
+
+const deleteProfile = async (profileId, userId) => {
+  try {
+    let profiles = await Profile.find({ userId: userId });
+
+    if (profiles.length > 1) {
+      let deleteProfile = await Profile.deleteOne({ _id: profileId });
+      return deleteProfile;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+module.exports = {
+  createProfile,
+  addProfile,
+  editProfile,
+  getProfiles,
+  deleteProfile,
+};

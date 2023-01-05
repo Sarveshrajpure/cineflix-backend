@@ -4,7 +4,7 @@ const profileSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      maxLength: 10,
+      maxLength: 50,
       required: true,
     },
     watchHistory: {

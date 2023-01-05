@@ -4,6 +4,7 @@ const {
   addProfileSchema,
   editProfileSchema,
   getProfileSchema,
+  deleteProfileSchema,
 } = require("../validations/profileValidations");
 const httpStatus = require("http-status");
 require("dotenv").config();
@@ -43,7 +44,32 @@ const profileController = {
       let values = await editProfileSchema.validateAsync(req.body);
 
       if (values) {
-        let editProfile = await profileService.editProfile(values);
+        let editProfile = await profileService.editProfile(
+          values.name,
+          values.userId,
+          values.profileId
+        );
+
+        if (editProfile) {
+          res.status(httpStatus.OK).send(editProfile);
+        } else {
+          res.status(httpStatus.OK).send(editProfile);
+        }
+      }
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async DeleteProfile(req, res, next) {
+    try {
+      let values = await deleteProfileSchema.validateAsync(req.body);
+
+      if (values) {
+        let editProfile = await profileService.deleteProfile(
+          values.profileId,
+          values.userId
+        );
 
         if (editProfile) {
           res.status(httpStatus.OK).send(editProfile);
