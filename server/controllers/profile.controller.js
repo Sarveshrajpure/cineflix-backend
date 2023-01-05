@@ -50,11 +50,7 @@ const profileController = {
           values.profilePic
         );
 
-        if (editProfile) {
-          res.status(httpStatus.OK).send(editProfile);
-        } else {
-          res.status(httpStatus.OK).send(editProfile);
-        }
+        res.status(httpStatus.OK).send(editProfile);
       }
     } catch (error) {
       next(error);
