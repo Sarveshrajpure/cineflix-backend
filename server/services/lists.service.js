@@ -64,6 +64,15 @@ const fetchListById = async (id) => {
   }
 };
 
+const fetchListsByContentId = async (contentId) => {
+  try {
+    let lists = await List.find({ content: contentId });
+    return lists;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const editList = async (id, title, genre, content) => {
   try {
     let getListContent = await List.findById(id);
@@ -148,6 +157,16 @@ const removeListItem = async (id, contentId) => {
   }
 };
 
+const removeListItemByContentId = async (contentId) => {
+  try {
+    let removeItem = await List.updateOne({ $pull: { content: contentId } });
+
+    return removeItem;
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   createList,
   deleteList,
@@ -156,4 +175,6 @@ module.exports = {
   addListItem,
   removeListItem,
   fetchListById,
+  removeListItemByContentId,
+  fetchListsByContentId,
 };

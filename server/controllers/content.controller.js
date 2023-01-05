@@ -128,5 +128,25 @@ const contentController = {
       next(error);
     }
   },
+
+  async getMovies(req, res, next) {
+    try {
+      let fetchAllMovies = await contentService.getAllMovies();
+
+      res.status(httpStatus.OK).send(fetchAllMovies);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async getSeries(req, res, next) {
+    try {
+      let fetchAllSeries = await contentService.getAllSeries();
+
+      res.status(httpStatus.OK).send(fetchAllSeries);
+    } catch (error) {
+      next(error);
+    }
+  },
 };
 module.exports = contentController;

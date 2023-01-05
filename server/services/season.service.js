@@ -38,4 +38,19 @@ const deleteSeasonById = async (id) => {
   }
 };
 
-module.exports = { createSeason, findSeasonsByContentId, deleteSeasonById };
+const deleteSeasonsByContentId = async (id) => {
+  try {
+    let deletedSeasons = await Season.deleteMany({ contentId: id });
+
+    return deletedSeasons;
+  } catch (error) {
+    throw error;
+  }
+};
+
+module.exports = {
+  createSeason,
+  findSeasonsByContentId,
+  deleteSeasonById,
+  deleteSeasonsByContentId,
+};

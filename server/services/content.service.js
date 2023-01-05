@@ -3,6 +3,16 @@ const { Season } = require("../models/season");
 const { Episode } = require("../models/episode");
 const { ApiError } = require("../middlewares/apiError");
 const httpStatus = require("http-status");
+const { deleteEpisodesBySesonId } = require("./episode.service");
+const {
+  findSeasonsByContentId,
+  deleteSeasonsByContentId,
+} = require("./season.service");
+const {
+  removeListItemByContentId,
+  fetchListsByContentId,
+  removeListItem,
+} = require("./lists.service");
 
 const addContent = async (
   title,
@@ -92,11 +102,35 @@ const UpdateContent = async (
 const deleteContent = async (id, type) => {
   try {
     if (type === "series") {
-      console.log("in series");
-    }
-    if (type === "movie") {
+      let findSeasons = await findSeasonsByContentId(id);
+
+      for (let i = 0; i < findSeasons.length; i++) {
+        deleteEpisodesBySesonId(findSeasons[i]._id);
+      }
+
+      let deleteSeasons = await deleteSeasonsByContentId(id);
+
+      let getListsByContentId = await fetchListsByContentId(id);
+      console.log(getListsByContentId);
+
+      for (let i = 0; i < getListsByContentId.length; i++) {
+        await removeListItem(getListsByContentId[i]._id, id);
+      }
+
       let deletedContent = await Content.findByIdAndDelete(id);
 
+      return deletedContent;
+    }
+    if (type === "movie") {
+      let getListsByContentId = await fetchListsByContentId(id);
+      console.log(getListsByContentId);
+
+      for (let i = 0; i < getListsByContentId.length; i++) {
+        await removeListItem(getListsByContentId[i]._id, id);
+      }
+      let deletedContent = await Content.findByIdAndDelete(id);
+
+      console.log(removeListItem);
       return deletedContent;
     }
   } catch (error) {
@@ -139,6 +173,26 @@ const getAllContent = async () => {
   }
 };
 
+const getAllMovies = async () => {
+  try {
+    let allContent = await Content.find({ type: "movie" });
+
+    return allContent;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getAllSeries = async () => {
+  try {
+    let allContent = await Content.find({ type: "series" });
+
+    return allContent;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const getContentById = async (id) => {
   try {
     let content = await Content.findById({ _id: id });
@@ -156,4 +210,6 @@ module.exports = {
   randomContent,
   getAllContent,
   getContentById,
+  getAllMovies,
+  getAllSeries,
 };

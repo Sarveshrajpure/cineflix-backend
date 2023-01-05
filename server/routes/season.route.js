@@ -7,9 +7,9 @@ const router = express.Router();
 router.post("/addseason", adminAuth(), seasonController.addSeason);
 
 //api/season/getall
-router.get("/getall", auth(), seasonController.getAllSeasons);
+router.post("/getall", auth(), seasonController.getAllSeasons);
 
 //api/season/deleteseason
-router.delete("/deleteseason", adminAuth(), seasonController.deleteSeason);
+router.post("/deleteseason", adminAuth(), seasonController.deleteSeason);
 
 module.exports = router;

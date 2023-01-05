@@ -10,7 +10,7 @@ router.post("/addlist", adminAuth(), listsController.addNewList);
 router.put("/updatelist", adminAuth(), listsController.updateList);
 
 // api/lists/additem;
-router.put("/additem", adminAuth(), listsController.addListItem);
+router.post("/additem", adminAuth(), listsController.addListItem);
 
 // api/lists/removeitem;
 router.post("/removeitem", adminAuth(), listsController.removeListItem);
