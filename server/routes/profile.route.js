@@ -18,4 +18,10 @@ router.post("/deleteprofile", auth(), profileController.DeleteProfile);
 //api/profile/updatehistory
 router.post("/updatehistory", auth(), profileController.updateProfileHistory);
 
+//api/profile/addtofavourite
+router.post("/addtofavourite", auth(), profileController.AddToFavourite);
+
+//api/profile/removefavourite
+router.post("/removefavourite", auth(), profileController.RemoveFavourite);
+
 module.exports = router;

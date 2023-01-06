@@ -6,6 +6,8 @@ const {
   getProfileSchema,
   deleteProfileSchema,
   updateProfileHistorySchema,
+  addToFavouriteSchema,
+  removeFavouriteSchema,
 } = require("../validations/profileValidations");
 const httpStatus = require("http-status");
 require("dotenv").config();
@@ -91,6 +93,40 @@ const profileController = {
         } else {
           res.status(httpStatus.OK).send(editProfile);
         }
+      }
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async AddToFavourite(req, res, next) {
+    try {
+      let values = await addToFavouriteSchema.validateAsync(req.body);
+
+      if (values) {
+        let editProfile = await profileService.addToFavourite(
+          values.profileId,
+          values.contentId
+        );
+
+        res.status(httpStatus.OK).send(editProfile);
+      }
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async RemoveFavourite(req, res, next) {
+    try {
+      let values = await removeFavouriteSchema.validateAsync(req.body);
+
+      if (values) {
+        let editProfile = await profileService.removeFavouriteItem(
+          values.profileId,
+          values.contentId
+        );
+
+        res.status(httpStatus.OK).send(editProfile);
       }
     } catch (error) {
       next(error);

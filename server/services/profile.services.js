@@ -126,6 +126,46 @@ const deleteProfile = async (profileId, userId) => {
     throw error;
   }
 };
+
+const addToFavourite = async (profileId, contentId) => {
+  try {
+    let profile = await Profile.findById({ _id: profileId });
+    let map = new Map();
+
+    let previouslyAvailableContent = profile.favourites;
+    let length = previouslyAvailableContent.length;
+
+    for (let i = 0; i < length; i++) {
+      map.set(profile.favourites[i], true);
+    }
+
+    if (!map.has(contentId)) {
+      let profileFavourites = await Profile.updateOne(
+        { _id: profileId },
+        { $push: { favourites: contentId } },
+        { new: true }
+      );
+      return profileFavourites;
+    } else {
+      return " Content already in favourites!";
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+const removeFavouriteItem = async (profileId, contentId) => {
+  try {
+    let removeFavourite = await Profile.updateOne(
+      { _id: profileId },
+      { $pull: { favourites: contentId } }
+    );
+
+    return removeFavourite;
+  } catch (error) {
+    throw error;
+  }
+};
 module.exports = {
   createProfile,
   addProfile,
@@ -133,4 +173,6 @@ module.exports = {
   getProfiles,
   deleteProfile,
   updateWatchHistory,
+  addToFavourite,
+  removeFavouriteItem,
 };

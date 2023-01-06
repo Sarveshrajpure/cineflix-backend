@@ -28,7 +28,16 @@ const updateProfileHistorySchema = Joi.object({
   id: Joi.objectId().required(),
   contentId: Joi.objectId().required(),
   watchTime: Joi.number().max(10).required(),
-  contentType: Joi.string().max(10).required(),
+  contentType: Joi.string().max(10).required(),})
+  
+const addToFavouriteSchema = Joi.object({
+  profileId: Joi.objectId().required(),
+  contentId: Joi.objectId().required(),
+});
+
+const removeFavouriteSchema = Joi.object({
+  profileId: Joi.objectId().required(),
+  contentId: Joi.objectId().required(),
 });
 
 module.exports = {
@@ -37,4 +46,6 @@ module.exports = {
   getProfileSchema,
   deleteProfileSchema,
   updateProfileHistorySchema,
+  addToFavouriteSchema,
+  removeFavouriteSchema,
 };

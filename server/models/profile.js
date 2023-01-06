@@ -28,6 +28,9 @@ const profileSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    favourites: {
+      type: Array,
+    },
   },
   { timestamps: true }
 );
