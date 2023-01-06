@@ -111,7 +111,7 @@ const deleteContent = async (id, type) => {
       let deleteSeasons = await deleteSeasonsByContentId(id);
 
       let getListsByContentId = await fetchListsByContentId(id);
-      console.log(getListsByContentId);
+      
 
       for (let i = 0; i < getListsByContentId.length; i++) {
         await removeListItem(getListsByContentId[i]._id, id);
@@ -123,14 +123,14 @@ const deleteContent = async (id, type) => {
     }
     if (type === "movie") {
       let getListsByContentId = await fetchListsByContentId(id);
-      console.log(getListsByContentId);
+      
 
       for (let i = 0; i < getListsByContentId.length; i++) {
         await removeListItem(getListsByContentId[i]._id, id);
       }
       let deletedContent = await Content.findByIdAndDelete(id);
 
-      console.log(removeListItem);
+      
       return deletedContent;
     }
   } catch (error) {

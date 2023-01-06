@@ -27,6 +27,15 @@ const findSeasonsByContentId = async (contentId) => {
     throw error;
   }
 };
+const findSeasonsById = async (id) => {
+  try {
+    let findSeason = await Season.findById({ _id: id });
+
+    return findSeason;
+  } catch (error) {
+    throw error;
+  }
+};
 
 const deleteSeasonById = async (id) => {
   try {
@@ -53,4 +62,5 @@ module.exports = {
   findSeasonsByContentId,
   deleteSeasonById,
   deleteSeasonsByContentId,
+  findSeasonsById,
 };

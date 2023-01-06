@@ -10,7 +10,16 @@ const getAllSeasonsSchema = Joi.object({
   contentId: Joi.objectId().required(),
 });
 
+const getSeasonByIdSchema = Joi.object({
+  id: Joi.objectId().required(),
+});
+
 const deleteSeasonsSchema = Joi.object({
   seasonId: Joi.objectId().required(),
 });
-module.exports = { addSeasonSchema, getAllSeasonsSchema, deleteSeasonsSchema };
+module.exports = {
+  addSeasonSchema,
+  getAllSeasonsSchema,
+  getSeasonByIdSchema,
+  deleteSeasonsSchema,
+};

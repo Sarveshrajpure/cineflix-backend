@@ -7,7 +7,7 @@ const router = express.Router();
 router.post("/addcontent", adminAuth(), contentController.addNewContent);
 
 //api/content/updatecontent
-router.put("/updatecontent", adminAuth(), contentController.updateContent);
+router.post("/updatecontent", adminAuth(), contentController.updateContent);
 
 //api/content/deletecontent
 router.post("/deletecontent", adminAuth(), contentController.deleteContent);

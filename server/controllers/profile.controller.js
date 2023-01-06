@@ -5,6 +5,7 @@ const {
   editProfileSchema,
   getProfileSchema,
   deleteProfileSchema,
+  updateProfileHistorySchema,
 } = require("../validations/profileValidations");
 const httpStatus = require("http-status");
 require("dotenv").config();
@@ -51,6 +52,24 @@ const profileController = {
         );
 
         res.status(httpStatus.OK).send(editProfile);
+      }
+    } catch (error) {
+      next(error);
+    }
+  },
+  async updateProfileHistory(req, res, next) {
+    try {
+      let values = await updateProfileHistorySchema.validateAsync(req.body);
+
+      let updateHistory = await profileService.updateWatchHistory(
+        values.id,
+        values.contentId,
+        values.watchTime,
+        values.contentType
+      );
+
+      if (updateHistory.modifiedCount > 0) {
+        res.status(httpStatus.OK).send({ message: "Watch History updated!" });
       }
     } catch (error) {
       next(error);

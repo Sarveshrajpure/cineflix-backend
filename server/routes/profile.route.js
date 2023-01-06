@@ -15,4 +15,7 @@ router.post("/editprofile", auth(), profileController.EditProfile);
 //api/profile/deleteprofile
 router.post("/deleteprofile", auth(), profileController.DeleteProfile);
 
+//api/profile/updatehistory
+router.post("/updatehistory", auth(), profileController.updateProfileHistory);
+
 module.exports = router;

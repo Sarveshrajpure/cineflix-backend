@@ -52,7 +52,7 @@ const deleteEpisodeById = async (id) => {
 const deleteEpisodesBySesonId = async (seasonId) => {
   try {
     let deletedEpisode = await Episode.deleteMany({ seasonId: seasonId });
-    console.log(deletedEpisode);
+    
     return deletedEpisode;
   } catch (error) {
     throw error;

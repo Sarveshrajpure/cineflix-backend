@@ -3,6 +3,7 @@ const {
   addSeasonSchema,
   getAllSeasonsSchema,
   deleteSeasonsSchema,
+  getSeasonByIdSchema,
 } = require("../validations/seasonValidation");
 const { seasonService, episodeService } = require("../services");
 const httpStatus = require("http-status");
@@ -32,6 +33,18 @@ const seasonController = {
         let seasons = await seasonService.findSeasonsByContentId(
           values.contentId
         );
+
+        res.status(httpStatus.OK).send(seasons);
+      }
+    } catch (error) {
+      next(error);
+    }
+  },
+  async getSeasonById(req, res, next) {
+    try {
+      let values = await getSeasonByIdSchema.validateAsync(req.body);
+      if (values) {
+        let seasons = await seasonService.findSeasonsById(values.id);
 
         res.status(httpStatus.OK).send(seasons);
       }

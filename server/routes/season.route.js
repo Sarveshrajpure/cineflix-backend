@@ -9,6 +9,9 @@ router.post("/addseason", adminAuth(), seasonController.addSeason);
 //api/season/getall
 router.post("/getall", auth(), seasonController.getAllSeasons);
 
+//api/season/getseasonbyid
+router.post("/getseasonbyid", auth(), seasonController.getSeasonById);
+
 //api/season/deleteseason
 router.post("/deleteseason", adminAuth(), seasonController.deleteSeason);
 

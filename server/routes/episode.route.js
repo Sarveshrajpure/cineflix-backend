@@ -10,9 +10,9 @@ router.post("/addepisode", adminAuth(), episodeController.addEpisode);
 router.put("/updateepisode", adminAuth(), episodeController.updateEpisode);
 
 //api/episode/addepisode
-router.delete("/deleteEpisode", adminAuth(), episodeController.deleteEpisode);
+router.post("/deleteEpisode", adminAuth(), episodeController.deleteEpisode);
 
 //api/episode/getall
-router.get("/getall", auth(), episodeController.getAllEpisodes);
+router.post("/getall", auth(), episodeController.getAllEpisodes);
 
 module.exports = router;

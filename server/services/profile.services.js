@@ -78,6 +78,42 @@ const editProfile = async (name, profileId, profilePic) => {
   }
 };
 
+const updateWatchHistory = async (id, contentId, watchTime, contentType) => {
+  try {
+    let findHistory = await Profile.findOne({
+      watchHistory: { $elemMatch: { contentId: contentId } },
+    });
+
+    if (!findHistory) {
+      let addHistory = await Profile.updateOne(
+        { _id: id },
+        {
+          $push: {
+            watchHistory: {
+              contentId,
+              watchTime,
+              contentType,
+            },
+          },
+        },
+        { new: true }
+      );
+      return addHistory;
+    } else {
+      let updateHistory = await Profile.updateOne(
+        {
+          "watchHistory.contentId": contentId,
+        },
+        { $set: { "watchHistory.$.watchTime": watchTime } }
+      );
+
+      return updateHistory;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
 const deleteProfile = async (profileId, userId) => {
   try {
     let profiles = await Profile.find({ userId: userId });
@@ -96,4 +132,5 @@ module.exports = {
   editProfile,
   getProfiles,
   deleteProfile,
+  updateWatchHistory,
 };

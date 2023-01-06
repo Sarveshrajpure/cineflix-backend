@@ -1,5 +1,16 @@
 const mongoose = require("mongoose");
 
+const watchHistoryObjectSchema = new mongoose.Schema({
+  contentId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Content",
+  },
+  watchTime: { type: Number, maxLength: 10 },
+  contentType: {
+    type: String,
+  },
+});
+
 const profileSchema = new mongoose.Schema(
   {
     name: {
@@ -7,9 +18,7 @@ const profileSchema = new mongoose.Schema(
       maxLength: 50,
       required: true,
     },
-    watchHistory: {
-      type: Array,
-    },
+    watchHistory: [watchHistoryObjectSchema],
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",

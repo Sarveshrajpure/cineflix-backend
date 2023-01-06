@@ -14,7 +14,7 @@ const contentController = {
   async addNewContent(req, res, next) {
     try {
       let values = await addContentSchema.validateAsync(req.body);
-      console.log(values);
+      
       if (values) {
         let addedContent = await contentService.addContent(
           values.title,

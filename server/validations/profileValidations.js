@@ -24,9 +24,17 @@ const getProfileSchema = Joi.object({
   userId: Joi.objectId().required(),
 });
 
+const updateProfileHistorySchema = Joi.object({
+  id: Joi.objectId().required(),
+  contentId: Joi.objectId().required(),
+  watchTime: Joi.number().max(10).required(),
+  contentType: Joi.string().max(10).required(),
+});
+
 module.exports = {
   addProfileSchema,
   editProfileSchema,
   getProfileSchema,
   deleteProfileSchema,
+  updateProfileHistorySchema,
 };
